@@ -16,6 +16,7 @@ export default function AdSlot({
   height = 250,
   label = '[ ad unit goes here ]',
   showStats = false,
+  contain = false,
 }) {
   const frameRef = useRef(null)
   const [stats, setStats] = useState(null)
@@ -86,9 +87,15 @@ export default function AdSlot({
           margin: '0 auto',
           border: '1px solid #ddd',
         }}
-        // allow-scripts: run the ad's JS. allow-popups(+escape): let popunder
-        // formats open. allow-same-origin: many tags need it to load resources.
-        sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+        // Default: allow the ad's JS + popups (popunder formats). `contain`
+        // mode drops allow-popups and (implicitly) top-navigation, so page-
+        // hijacking formats (popunder/vignette) are boxed inside the iframe
+        // and can't take over the real page.
+        sandbox={
+          contain
+            ? 'allow-scripts allow-same-origin'
+            : 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox'
+        }
       />
       {showStats && stats && (
         <div className="ad-slot__stats">

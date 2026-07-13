@@ -1,22 +1,37 @@
+import { useRef } from 'react'
 import AdSlot from './AdSlot.jsx'
+import { useContainerHosts } from './signals.js'
 
-// One network's row: what it tracks, what it serves, the trackers it fired,
-// and its live ad units rendered as evidence.
-export default function NetworkRow({ network, observedHosts, attributeAll }) {
-  // Attribute observed third-party hosts to this network by its known base
-  // domains. These networks also fire many randomly-named tracking domains that
-  // no static list can catch, so when this is the only network on the page we
-  // attribute every third-party host to it (they're all part of its chain).
-  const matched = observedHosts.filter((h) =>
-    network.matchHosts.some((base) => h.includes(base)),
-  )
-  const hosts = attributeAll ? observedHosts : matched
+// One network's row: what it tracks, what it serves, the trackers its own ad
+// units fired, and its live ad units rendered as evidence. Tracker attribution
+// is measured from this row's own iframes, so it's correct with any number of
+// networks on the page.
+export default function NetworkRow({ network }) {
+  const sectionRef = useRef(null)
+  const hosts = useContainerHosts(sectionRef)
 
   const live = network.units.filter((u) => u.tag)
   const pending = network.units.filter((u) => !u.tag)
 
+  const renderUnit = (u) => (
+    <figure className="network__ad" key={u.format}>
+      <AdSlot
+        width={u.width}
+        height={u.height}
+        tag={u.tag}
+        contain={u.contain}
+        showStats={!!u.tag}
+        label={u.tag ? `[ ${u.format} ]` : `⏳ ${u.format}`}
+      />
+      <figcaption>
+        {u.format}
+        {u.contain && <span className="network__contained"> · contained</span>}
+      </figcaption>
+    </figure>
+  )
+
   return (
-    <section className="network">
+    <section className="network" ref={sectionRef}>
       <header className="network__head">
         <div>
           <h3>{network.name}</h3>
@@ -59,7 +74,11 @@ export default function NetworkRow({ network, observedHosts, attributeAll }) {
         <summary>Tracker domains observed this page load ({hosts.length})</summary>
         <ul>
           {hosts.length ? (
-            hosts.map((h) => <li key={h}><code>{h}</code></li>)
+            hosts.map((h) => (
+              <li key={h}>
+                <code>{h}</code>
+              </li>
+            ))
           ) : (
             <li>None observed yet — reload to capture the tracker chain.</li>
           )}
@@ -68,28 +87,14 @@ export default function NetworkRow({ network, observedHosts, attributeAll }) {
 
       <div className="network__ads">
         <h4>Live units ({live.length})</h4>
-        <div className="network__adgrid">
-          {live.map((u) => (
-            <figure className="network__ad" key={u.format}>
-              <AdSlot width={u.width} height={u.height} tag={u.tag} label={`[ ${u.format} ]`} showStats />
-              <figcaption>{u.format}</figcaption>
-            </figure>
-          ))}
-        </div>
+        <div className="network__adgrid">{live.map(renderUnit)}</div>
       </div>
 
       {pending.length > 0 && (
         <div className="network__ads network__ads--pending">
           <h4>Pending units ({pending.length})</h4>
           <p className="network__pendingnote">Created but awaiting network approval — no tag serving yet.</p>
-          <div className="network__adgrid">
-            {pending.map((u) => (
-              <figure className="network__ad" key={u.format}>
-                <AdSlot width={u.width} height={u.height} label={`⏳ ${u.format}`} />
-                <figcaption>{u.format}</figcaption>
-              </figure>
-            ))}
-          </div>
+          <div className="network__adgrid">{pending.map(renderUnit)}</div>
         </div>
       )}
     </section>

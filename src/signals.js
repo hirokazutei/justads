@@ -66,12 +66,14 @@ function baseSignals() {
   }
 }
 
-// useThirdPartyHosts: polls the Resource Timing API and returns every
-// third-party host the ads contacted. The ad units render in srcDoc iframes,
-// so most of their requests live in the CHILD frames' timelines (which we can
-// read because srcDoc inherits our origin), not the parent's — we aggregate
-// both. Polls because many trackers fire late.
-export function useThirdPartyHosts() {
+// useContainerHosts: polls the ad iframes WITHIN a given container element and
+// returns the third-party hosts they contacted. Because each network row is a
+// separate container, this attributes the tracker chain to the right network
+// by which iframes actually loaded it — no guessing by domain name. The ad
+// units render in srcDoc iframes, so we read each child frame's own timeline
+// (readable because srcDoc inherits our origin). Polls because trackers fire
+// late.
+export function useContainerHosts(ref) {
   const [hosts, setHosts] = useState([])
 
   useEffect(() => {
@@ -93,9 +95,10 @@ export function useThirdPartyHosts() {
       }
     }
     const collect = () => {
+      const el = ref.current
+      if (!el) return
       const found = new Set()
-      scan(performance, found)
-      for (const f of document.querySelectorAll('iframe[title="advertisement"]')) {
+      for (const f of el.querySelectorAll('iframe[title="advertisement"]')) {
         try {
           scan(f.contentWindow.performance, found)
         } catch {
@@ -111,7 +114,7 @@ export function useThirdPartyHosts() {
       clearInterval(poll)
       clearTimeout(stop)
     }
-  }, [])
+  }, [ref])
 
   return hosts
 }

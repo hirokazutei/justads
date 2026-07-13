@@ -13,7 +13,21 @@ export default function AdSlot({
   label = '[ ad unit goes here ]',
 }) {
   if (!tag) {
-    return <div className="ad-slot">{label}</div>
+    // Size the placeholder to the real ad footprint so the layout
+    // matches what the live unit will occupy.
+    const isFixed = typeof width === 'number'
+    return (
+      <div
+        className="ad-slot"
+        style={
+          isFixed
+            ? { width, height, maxWidth: '100%', margin: '24px auto', boxSizing: 'border-box' }
+            : undefined
+        }
+      >
+        {label}
+      </div>
+    )
   }
 
   const srcDoc = `<!DOCTYPE html><html><head><meta charset="utf-8">

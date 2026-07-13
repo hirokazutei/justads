@@ -75,11 +75,36 @@ const adsterra = {
 <script async="async" data-cfasync="false" src="https://pl30342350.effectivecpmnetwork.com/ffc93e0712ad660ba58d1dae1be64bda/invoke.js"></script>
 <div id="container-ffc93e0712ad660ba58d1dae1be64bda"></div>`,
     },
-    // Pending Adsterra approval — no tag yet. Paste each unit's tag into `tag`
-    // and delete `pending` once approved.
-    { format: 'Banner 160×300', width: 160, height: 300, pending: true },
-    { format: 'Banner 468×60', width: 468, height: 60, pending: true },
-    { format: 'Banner 320×50', width: 320, height: 50, pending: true },
+    {
+      format: 'Banner 160×300',
+      width: 160,
+      height: 300,
+      tag: `
+<script type="text/javascript">
+  atOptions = { 'key':'cfbf85ec45e374fb8b102e9ce91b7851','format':'iframe','height':300,'width':160,'params':{} };
+</script>
+<script src="https://www.highperformanceformat.com/cfbf85ec45e374fb8b102e9ce91b7851/invoke.js"></script>`,
+    },
+    {
+      format: 'Banner 468×60',
+      width: 468,
+      height: 60,
+      tag: `
+<script type="text/javascript">
+  atOptions = { 'key':'57bcfa127e19ad1f524827b8a2ef3681','format':'iframe','height':60,'width':468,'params':{} };
+</script>
+<script src="https://www.highperformanceformat.com/57bcfa127e19ad1f524827b8a2ef3681/invoke.js"></script>`,
+    },
+    {
+      format: 'Banner 320×50',
+      width: 320,
+      height: 50,
+      tag: `
+<script type="text/javascript">
+  atOptions = { 'key':'29bf1932a6457263856353d62e03870a','format':'iframe','height':50,'width':320,'params':{} };
+</script>
+<script src="https://www.highperformanceformat.com/29bf1932a6457263856353d62e03870a/invoke.js"></script>`,
+    },
   ],
 }
 

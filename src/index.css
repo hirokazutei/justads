@@ -1,0 +1,27 @@
+body {
+  background: #fff;
+  font-family: system-ui, sans-serif;
+  max-width: 700px;
+  margin: 40px auto;
+  line-height: 1.6;
+  color: #222;
+  padding: 0 16px;
+}
+
+.ad-slot {
+  background: #f0f0f0;
+  border: 2px dashed #999;
+  padding: 20px;
+  margin: 24px 0;
+  text-align: center;
+  color: #666;
+  font-size: 0.9em;
+}
+
+h1 {
+  font-size: 1.6em;
+}
+
+article {
+  margin-bottom: 32px;
+}

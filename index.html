@@ -4,41 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>justads</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 700px; margin: 40px auto; line-height: 1.6; color: #222; padding: 0 16px; }
-    .ad-slot { background: #f0f0f0; border: 2px dashed #999; padding: 20px; margin: 24px 0; text-align: center; color: #666; font-size: 0.9em; }
-    h1 { font-size: 1.6em; }
-    article { margin-bottom: 32px; }
-  </style>
 </head>
 <body>
-
-  <h1>justads</h1>
-  <p><em>Sandbox site for studying how a low-barrier ad network's units render, load, and behave. Not for real traffic.</em></p>
-
-  <!--
-    AD SLOT 1: paste the network's <script>/<ins> tag here once your
-    account + site are approved. Replace this whole comment block.
-  -->
-  <div class="ad-slot">[ ad unit goes here ]</div>
-
-  <article>
-    <h2>Placeholder Article One</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-  </article>
-
-  <div class="ad-slot">[ ad unit goes here ]</div>
-
-  <article>
-    <h2>Placeholder Article Two</h2>
-    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-    qui officia deserunt mollit anim id est laborum.</p>
-  </article>
-
-  <div class="ad-slot">[ ad unit goes here ]</div>
-
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

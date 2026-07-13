@@ -127,23 +127,16 @@ const monetag = {
     'Vignette: full-screen interstitial between page views',
     'Also offers Popunder / Direct Link / Web Push (not used here)',
   ],
+  // Monetag deactivated every zone (11278280 / 82 / 85 / 86) within hours,
+  // citing a publisher-terms violation. Its tags no longer execute here — the
+  // units below are kept as a documented case study, not loaded.
+  notice:
+    'All Monetag zones were deactivated within hours of going live, flagged as non-compliant with publisher terms. The likely trigger: containing the tags in a restrictive sandbox and neutering the push service worker is exactly what these networks’ anti-tampering / invalid-traffic detection watches for. Their scripts are no longer loaded on this page.',
   behavior:
-    'These are page-level scripts, not inline banners — left loose they fire popunders, full-screen interstitials, and notification prompts across the whole site. Here each is boxed in a sandboxed iframe with popups and top-navigation blocked, so the behavior is contained and studyable instead of hijacking the page. Note the naming trap: In-Page Push renders in-page and needs no service worker, while Web Push (the sw.js one) is the invasive off-site format. Ads may not serve until Monetag validates the live domain.',
+    'The plan was to box each page-level format (In-Page Push, Vignette) in a sandboxed iframe with popups and top-navigation blocked, so the behavior stayed contained instead of hijacking the page. Note the naming trap that still holds: In-Page Push renders in-page and needs no service worker, while Web Push (the sw.js one) is the invasive off-site format. The takeaway: unlike Adsterra, Monetag actively detected the non-standard, non-invasive integration and pulled the zones.',
   units: [
-    {
-      format: 'In-Page Push',
-      width: 300,
-      height: 250,
-      contain: true,
-      tag: `<script>(function(s){s.dataset.zone='11278280',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>`,
-    },
-    {
-      format: 'Vignette',
-      width: 360,
-      height: 640,
-      contain: true,
-      tag: `<script>(function(s){s.dataset.zone='11278282',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>`,
-    },
+    { format: 'In-Page Push', width: 300, height: 250, deactivated: true },
+    { format: 'Vignette', width: 360, height: 640, deactivated: true },
   ],
 }
 

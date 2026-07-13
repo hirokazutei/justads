@@ -11,7 +11,8 @@ export default function NetworkRow({ network }) {
   const hosts = useContainerHosts(sectionRef)
 
   const live = network.units.filter((u) => u.tag)
-  const pending = network.units.filter((u) => !u.tag)
+  const deactivated = network.units.filter((u) => u.deactivated)
+  const pending = network.units.filter((u) => !u.tag && !u.deactivated)
 
   const renderUnit = (u) => (
     <figure className="network__ad" key={u.format}>
@@ -21,7 +22,7 @@ export default function NetworkRow({ network }) {
         tag={u.tag}
         contain={u.contain}
         showStats={!!u.tag}
-        label={u.tag ? `[ ${u.format} ]` : `⏳ ${u.format}`}
+        label={u.tag ? `[ ${u.format} ]` : u.deactivated ? `🚫 ${u.format}` : `⏳ ${u.format}`}
       />
       <figcaption>
         {u.format}
@@ -38,10 +39,18 @@ export default function NetworkRow({ network }) {
           <span className="network__site">{network.site}</span>
         </div>
         <span className="network__meta">
-          {live.length} live{pending.length ? ` · ${pending.length} pending` : ''} ·{' '}
+          {live.length} live
+          {pending.length ? ` · ${pending.length} pending` : ''}
+          {deactivated.length ? ` · ${deactivated.length} deactivated` : ''} ·{' '}
           {hosts.length} trackers fired · {network.tracks.length} data points
         </span>
       </header>
+
+      {network.notice && (
+        <p className="network__notice">
+          <strong>⚠ Zones deactivated:</strong> {network.notice}
+        </p>
+      )}
 
       <p className="network__approval">Approval bar: {network.approval}</p>
 
@@ -85,16 +94,26 @@ export default function NetworkRow({ network }) {
         </ul>
       </details>
 
-      <div className="network__ads">
-        <h4>Live units ({live.length})</h4>
-        <div className="network__adgrid">{live.map(renderUnit)}</div>
-      </div>
+      {live.length > 0 && (
+        <div className="network__ads">
+          <h4>Live units ({live.length})</h4>
+          <div className="network__adgrid">{live.map(renderUnit)}</div>
+        </div>
+      )}
 
       {pending.length > 0 && (
         <div className="network__ads network__ads--pending">
           <h4>Pending units ({pending.length})</h4>
           <p className="network__pendingnote">Created but awaiting network approval — no tag serving yet.</p>
           <div className="network__adgrid">{pending.map(renderUnit)}</div>
+        </div>
+      )}
+
+      {deactivated.length > 0 && (
+        <div className="network__ads network__ads--pending">
+          <h4>Deactivated units ({deactivated.length})</h4>
+          <p className="network__pendingnote">Zones pulled by the network — tags no longer loaded.</p>
+          <div className="network__adgrid">{deactivated.map(renderUnit)}</div>
         </div>
       )}
     </section>

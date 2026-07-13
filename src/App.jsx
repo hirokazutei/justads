@@ -1,5 +1,38 @@
 import AdSlot from './AdSlot.jsx'
 
+// --- Adsterra ad-unit tags -------------------------------------------------
+// Each string is the raw markup Adsterra generated for one unit. They render
+// inside AdSlot's sandboxed iframe. Real ads only serve once justads.click is
+// approved and live — expect these to be blank on localhost.
+
+const banner728x90 = `
+<script type="text/javascript">
+  atOptions = {
+    'key' : 'ef6791bb7b8d023daa545099abcca74d',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/ef6791bb7b8d023daa545099abcca74d/invoke.js"></script>`
+
+const banner300x250 = `
+<script type="text/javascript">
+  atOptions = {
+    'key' : '3958139816910cb89665d522622292bc',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/3958139816910cb89665d522622292bc/invoke.js"></script>`
+
+const nativeBanner = `
+<script async="async" data-cfasync="false" src="https://pl30342350.effectivecpmnetwork.com/ffc93e0712ad660ba58d1dae1be64bda/invoke.js"></script>
+<div id="container-ffc93e0712ad660ba58d1dae1be64bda"></div>`
+
 export default function App() {
   return (
     <>
@@ -11,16 +44,8 @@ export default function App() {
         </em>
       </p>
 
-      {/*
-        Each AdSlot below is sized to one Adsterra unit you created.
-        To go live, paste that unit's tag markup into its `tag` prop:
-          <AdSlot width={728} height={90} tag={`<script ...></script>`} />
-        Leaving `tag` off renders the sized dashed placeholder.
-        (Social Bar is an overlay — its script lives in index.html, not here.)
-      */}
-
       {/* Banner — 728x90 leaderboard */}
-      <AdSlot width={728} height={90} label="[ banner 728×90 ]" />
+      <AdSlot width={728} height={90} tag={banner728x90} label="[ banner 728×90 ]" />
 
       <article>
         <h2>Placeholder Article One</h2>
@@ -33,7 +58,7 @@ export default function App() {
       </article>
 
       {/* Banner — 300x250 medium rectangle */}
-      <AdSlot width={300} height={250} label="[ banner 300×250 ]" />
+      <AdSlot width={300} height={250} tag={banner300x250} label="[ banner 300×250 ]" />
 
       <article>
         <h2>Placeholder Article Two</h2>
@@ -44,7 +69,7 @@ export default function App() {
         </p>
       </article>
 
-      {/* Banner — 160x600 skyscraper */}
+      {/* Banner — 160x600 skyscraper (no tag yet) */}
       <AdSlot width={160} height={600} label="[ banner 160×600 ]" />
 
       <article>
@@ -56,8 +81,8 @@ export default function App() {
         </p>
       </article>
 
-      {/* Native Banner — blends with content; sized loosely, it flows to fit */}
-      <AdSlot height={250} label="[ native banner ]" />
+      {/* Native Banner — blends with content */}
+      <AdSlot height={300} tag={nativeBanner} label="[ native banner ]" />
     </>
   )
 }

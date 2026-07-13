@@ -34,12 +34,20 @@ export default function AdSlot({
     <style>html,body{margin:0;display:flex;justify-content:center;align-items:center;height:100%}</style>
     </head><body>${tag}</body></html>`
 
+  // The iframe renders the ad at its exact width/height with no padding, so
+  // the footprint matches the real unit. A thin border just marks the bounds.
   return (
     <iframe
-      className="ad-slot"
       title="advertisement"
       srcDoc={srcDoc}
-      style={{ width, height, display: 'block' }}
+      style={{
+        width,
+        height,
+        maxWidth: '100%',
+        display: 'block',
+        margin: '24px auto',
+        border: '1px solid #ddd',
+      }}
       // allow-scripts: run the ad's JS. allow-popups(+escape): let popunder
       // formats open. allow-same-origin: many tags need it to load resources.
       sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"

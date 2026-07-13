@@ -11,6 +11,11 @@ export default function App() {
         </em>
       </p>
 
+      {/*
+        To go live, paste your network's tag into the `tag` prop, e.g.:
+          <AdSlot height={90} tag={`<script ...></script>`} />
+        Leaving `tag` off renders the dashed placeholder.
+      */}
       <AdSlot />
 
       <article>

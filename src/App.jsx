@@ -29,6 +29,18 @@ const banner300x250 = `
 </script>
 <script src="https://www.highperformanceformat.com/3958139816910cb89665d522622292bc/invoke.js"></script>`
 
+const banner160x600 = `
+<script type="text/javascript">
+  atOptions = {
+    'key' : 'df3f76c1a21533004f9970f91ae61e62',
+    'format' : 'iframe',
+    'height' : 600,
+    'width' : 160,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/df3f76c1a21533004f9970f91ae61e62/invoke.js"></script>`
+
 const nativeBanner = `
 <script async="async" data-cfasync="false" src="https://pl30342350.effectivecpmnetwork.com/ffc93e0712ad660ba58d1dae1be64bda/invoke.js"></script>
 <div id="container-ffc93e0712ad660ba58d1dae1be64bda"></div>`
@@ -69,8 +81,8 @@ export default function App() {
         </p>
       </article>
 
-      {/* Banner — 160x600 skyscraper (no tag yet) */}
-      <AdSlot width={160} height={600} label="[ banner 160×600 ]" />
+      {/* Banner — 160x600 skyscraper */}
+      <AdSlot width={160} height={600} tag={banner160x600} label="[ banner 160×600 ]" />
 
       <article>
         <h2>Placeholder Article Three</h2>

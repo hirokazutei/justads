@@ -33,8 +33,10 @@ const adsterra = {
     'RTB display ads: banner, native, overlay',
     'Auto-rotating creatives per impression',
     'No domain-origin enforcement (tag serves anywhere)',
-    'Social Bar overlay hijacks the page title as clickbait (neutralized here)',
   ],
+  // Observed by watching each unit's traffic over time after render.
+  behavior:
+    'All data exchange is front-loaded at render — no continuous beaconing was observed over an 18-second window. Creatives rotate per page load, not passively. The Native Banner is by far the heaviest unit (~11 requests across 3 tracker domains vs 3–4 for standard banners), and every slot contacts its own separate randomly-named tracking domain.',
   units: [
     {
       format: 'Banner 728×90',
@@ -73,6 +75,11 @@ const adsterra = {
 <script async="async" data-cfasync="false" src="https://pl30342350.effectivecpmnetwork.com/ffc93e0712ad660ba58d1dae1be64bda/invoke.js"></script>
 <div id="container-ffc93e0712ad660ba58d1dae1be64bda"></div>`,
     },
+    // Pending Adsterra approval — no tag yet. Paste each unit's tag into `tag`
+    // and delete `pending` once approved.
+    { format: 'Banner 160×300', width: 160, height: 300, pending: true },
+    { format: 'Banner 468×60', width: 468, height: 60, pending: true },
+    { format: 'Banner 320×50', width: 320, height: 50, pending: true },
   ],
 }
 

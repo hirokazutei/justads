@@ -12,6 +12,9 @@ export default function NetworkRow({ network, observedHosts, attributeAll }) {
   )
   const hosts = attributeAll ? observedHosts : matched
 
+  const live = network.units.filter((u) => u.tag)
+  const pending = network.units.filter((u) => !u.tag)
+
   return (
     <section className="network">
       <header className="network__head">
@@ -20,8 +23,8 @@ export default function NetworkRow({ network, observedHosts, attributeAll }) {
           <span className="network__site">{network.site}</span>
         </div>
         <span className="network__meta">
-          {network.units.length} formats · {hosts.length} trackers fired ·{' '}
-          {network.tracks.length} data points
+          {live.length} live{pending.length ? ` · ${pending.length} pending` : ''} ·{' '}
+          {hosts.length} trackers fired · {network.tracks.length} data points
         </span>
       </header>
 
@@ -46,6 +49,12 @@ export default function NetworkRow({ network, observedHosts, attributeAll }) {
         </div>
       </div>
 
+      {network.behavior && (
+        <p className="network__behavior">
+          <strong>After render:</strong> {network.behavior}
+        </p>
+      )}
+
       <details className="network__trackers">
         <summary>Tracker domains observed this page load ({hosts.length})</summary>
         <ul>
@@ -58,16 +67,31 @@ export default function NetworkRow({ network, observedHosts, attributeAll }) {
       </details>
 
       <div className="network__ads">
-        <h4>Live units</h4>
+        <h4>Live units ({live.length})</h4>
         <div className="network__adgrid">
-          {network.units.map((u) => (
+          {live.map((u) => (
             <figure className="network__ad" key={u.format}>
-              <AdSlot width={u.width} height={u.height} tag={u.tag} label={`[ ${u.format} ]`} />
+              <AdSlot width={u.width} height={u.height} tag={u.tag} label={`[ ${u.format} ]`} showStats />
               <figcaption>{u.format}</figcaption>
             </figure>
           ))}
         </div>
       </div>
+
+      {pending.length > 0 && (
+        <div className="network__ads network__ads--pending">
+          <h4>Pending units ({pending.length})</h4>
+          <p className="network__pendingnote">Created but awaiting network approval — no tag serving yet.</p>
+          <div className="network__adgrid">
+            {pending.map((u) => (
+              <figure className="network__ad" key={u.format}>
+                <AdSlot width={u.width} height={u.height} label={`⏳ ${u.format}`} />
+                <figcaption>{u.format}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   )
 }

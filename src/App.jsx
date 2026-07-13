@@ -7,8 +7,8 @@ import NetworkRow from './NetworkRow.jsx'
 export default function App() {
   const observedHosts = useThirdPartyHosts()
 
-  // Ad overlays (e.g. Adsterra Social Bar) rewrite document.title as clickbait.
-  // Keep the tab pinned to the site's own title.
+  // Some ad formats rewrite document.title as clickbait. Keep the tab pinned
+  // to the site's own title as a defensive measure.
   useEffect(() => {
     const title = 'just ads'
     document.title = title

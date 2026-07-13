@@ -147,6 +147,16 @@ h4 {
   margin-bottom: 4px;
 }
 
+.network__behavior {
+  margin: 20px 0;
+  padding: 14px 16px;
+  background: var(--bg-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  color: #333;
+}
+
 .network__trackers {
   margin: 20px 0;
   font-size: 0.88rem;
@@ -164,15 +174,26 @@ h4 {
   font-size: 0.8rem;
 }
 
+.network__ads {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
 .network__ads h4 {
-  margin: 8px 0 16px;
+  margin: 0 0 4px;
   font-size: 0.95rem;
+}
+.network__pendingnote {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0 0 16px;
 }
 .network__adgrid {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 32px;
   align-items: flex-start;
+  margin-top: 16px;
 }
 .network__ad {
   margin: 0;
@@ -181,7 +202,17 @@ h4 {
   text-align: center;
   color: var(--muted);
   font-size: 0.78rem;
+  margin-top: 8px;
+}
+.ad-slot__stats {
+  text-align: center;
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
   margin-top: 6px;
+}
+.network__ads--pending .ad-slot {
+  opacity: 0.55;
 }
 
 /* --- ad slot --- */

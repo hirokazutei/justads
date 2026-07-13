@@ -66,9 +66,11 @@ function baseSignals() {
   }
 }
 
-// useThirdPartyHosts: polls the Resource Timing API for a few seconds and
-// returns every third-party host the page contacted — i.e. the tracker chain
-// the ads pulled in. Polls because many trackers fire late.
+// useThirdPartyHosts: polls the Resource Timing API and returns every
+// third-party host the ads contacted. The ad units render in srcDoc iframes,
+// so most of their requests live in the CHILD frames' timelines (which we can
+// read because srcDoc inherits our origin), not the parent's — we aggregate
+// both. Polls because many trackers fire late.
 export function useThirdPartyHosts() {
   const [hosts, setHosts] = useState([])
 
@@ -76,22 +78,35 @@ export function useThirdPartyHosts() {
     const self = location.hostname
     // ipapi.co is our own geo lookup, not an ad tracker — exclude it.
     const ignore = ['localhost', 'gstatic', 'googleapis', '127.0.0.1', 'ipapi.co']
-    const collect = () => {
-      const found = performance
-        .getEntriesByType('resource')
-        .map((r) => {
+    const scan = (perf, into) => {
+      try {
+        for (const r of perf.getEntriesByType('resource')) {
           try {
-            return new URL(r.name).hostname
+            const h = new URL(r.name).hostname
+            if (h && h !== self && !ignore.some((i) => h.includes(i))) into.add(h)
           } catch {
-            return null
+            /* non-URL entry */
           }
-        })
-        .filter((h) => h && h !== self && !ignore.some((i) => h.includes(i)))
-      setHosts([...new Set(found)].sort())
+        }
+      } catch {
+        /* timeline unreadable */
+      }
+    }
+    const collect = () => {
+      const found = new Set()
+      scan(performance, found)
+      for (const f of document.querySelectorAll('iframe[title="advertisement"]')) {
+        try {
+          scan(f.contentWindow.performance, found)
+        } catch {
+          /* cross-origin frame */
+        }
+      }
+      setHosts([...found].sort())
     }
     collect()
     const poll = setInterval(collect, 2000)
-    const stop = setTimeout(() => clearInterval(poll), 12000)
+    const stop = setTimeout(() => clearInterval(poll), 14000)
     return () => {
       clearInterval(poll)
       clearTimeout(stop)
